@@ -48,9 +48,6 @@ class NewsMaster {
     
     //MARK: Public methods
     func validFeatures() -> [Feature]
-    
-    //MARK: Private methods
-    private func fixAllBugs()
 }
 
 //MARK: SomeProtocol methods
@@ -63,6 +60,11 @@ extension NewsMaster: Testable {
     func testFeature(feature: Feature) -> Bool {
         return isValid
     }
+}
+
+//MARK: Private methods
+private extension NewsMaster {
+    private func fixAllBugs()
 }
 ```
 
@@ -327,6 +329,22 @@ let bounds = CGRectMake(40, 20, 120, 80)
 let centerPoint = CGPointMake(96, 42)
 ```
 优先使用struct作用域内的常量`CGRect.infinite`, `CGRect.null`, 代替 `CGRectInfinite`, `CGRectNull`, etc. For existing variables, you can use the shorter `.zero`.
+
+## 扩展(extension)
+使用扩展时，为了所有的方法能够正确的调用，请遵循以下规则
+
+* 请**不要**在扩展中重写父类的方法，下标，属性。如果需要重写的时候，请放在class中
+* 可以使用一个私有的extension来设置该extension中的所有成员访问级别
+
+可以使用typealias来实现Swift中扩展不能有名称的问题，来增强扩展的可读性
+``` swift
+// MARK: - Follow User
+private typealias UserFollowAction = User
+extension UserFollowAction {
+    func follow(...)
+    func unfollow(...)
+}
+```
 
 ## 单例
 把 `init` 方法标记为 `private`, 这样可以阻止其他人使用()去创建其他的实例
